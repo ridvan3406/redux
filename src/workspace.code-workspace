@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../react-portfolio"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

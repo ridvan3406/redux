@@ -1,60 +1,42 @@
 import './App.css';
-  import {createStore,combineReducers} from 'redux'
+import {connect} from 'react-redux'
+import {updateUser,addUser,deleteUser,getUser} from './actions/userAction'
 
-function reducer(state,action)
-{
-  console.log("Paramater Action=>",action);
-  if(action.type === 'changeTheState')
-  {
-    return action.payload.newState;
-  }
-  return "StateXYZ";}
-
-function userReducer(state ='' ,action){
-  switch (action.type) {
-    case "userUpdate":
-      return action.payload.user
-    default:
-      return state
-  }
-}
-
-function productReducer(state = [],action){
-  return state;
-}
-
-const rootReducer = combineReducers({ userReducer,productReducer})
-
-//const myStore = createStore(reducer);
-const myStore = createStore(rootReducer,
-  {
-    userReducer:'Tommy',
-    productReducer:[{name:'Sony',type:"Music Player"}]
-  },
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-console.log("(OLD)myStore.getState()=>",myStore.getState());
-
-myStore.subscribe(()=>{
-  ///alert("STORE CHANGED BRO!!!");
-  //console.log("Store updated. New state=",myStore.getState());
-})
-
-
-const action = {type:'changeTheState',payload:{newState:'My new state'}}
-
-myStore.dispatch(action);
-
-//console.log("(NEW)myStore.getState()=>",myStore.getState());
-
-const actionUser={type:"userUpdate",payload:{user:"emma"}}
-myStore.dispatch(actionUser)
-
-function App() {
+function App(props) {
+  console.log("APP PROPS:",props)
   return (
     <div className="App">
       APP COMP
+      <hr/>
+      {props.userReducer}
+      <br/>
+      <button onClick={()=>props.updateUser("Tommy New")}>Change User</button>
+      <button onClick={()=>props.addUser("Emma")}>Add User</button>
+      <button onClick={()=>props.deleteUser()}>Delete User</button>
+      <button onClick={()=>props.getUser(1)}>GET User From API</button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => 
+{
+  return state;
+}
+
+const mapDispatchToProps = {
+  updateUser,addUser,deleteUser,getUser
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
+/*
+const mergeProps = (propsFromState,propsFromDispatch,propsFromParentComp) =>
+{
+  console.log("-----------------------------------");
+  console.log("propsFromState : ",propsFromState);
+  console.log("propsFromDispatch : ",propsFromDispatch);
+  console.log("propsFromParentComp (ownProps) :",propsFromParentComp);
+  console.log("-----------------------------------");
+  return {}
+}
+export default connect(mapStateToProps,mapDispatchToProps,mergeProps)(App);
+*/
